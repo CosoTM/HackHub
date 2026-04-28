@@ -1,23 +1,24 @@
 package it.unicam.cs.ids.hackhub.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Utente {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long ID;
+    private Long ID;
     private String nome;
     private String email;
     private String password;
 
-    private List<UtenteType> tipoUtente;
-    //private Team team;
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    private List<UtenteType> tipoUtente = new ArrayList<>();
+
+    // private Team team;
 
     public long getID() {
         return ID;

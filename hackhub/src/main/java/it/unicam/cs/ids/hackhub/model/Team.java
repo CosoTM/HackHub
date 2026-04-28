@@ -1,7 +1,27 @@
 package it.unicam.cs.ids.hackhub.model;
 
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
 public class Team {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long ID;
+
     private String nomeTeam;
+    private boolean espulso = false;
+
+    @OneToMany
+    private List<Utente> membriTeam = new ArrayList<>();
+
+    @OneToOne
+    private Utente capoTeam;
+
+    // private Hackathon hackathon;
 
     public String getNomeTeam() {
         return nomeTeam;
@@ -19,16 +39,16 @@ public class Team {
         this.espulso = espulso;
     }
 
-    private boolean espulso;
+    public Utente getCapoTeam() {return capoTeam;}
 
-    public Sottomissione inviareSottomissione(){
-        return null;
-    }
+    public void setCapoTeam(Utente capoTeam) {this.capoTeam = capoTeam;}
 
-    public RichiestaSupporto inviaRichiestaSupporto(){
-        return null;
-    }
+    public List<Utente> getMembriTeam() {return membriTeam;}
 
-    public void aggiornareSottomissione(Sottomissione sottomissione){
-    }
+    public void setMembriTeam(List<Utente> membriTeam) {this.membriTeam = membriTeam;}
+
+    public boolean hasMembroTeam(Utente utente) {return this.membriTeam.contains(utente);}
+
+    public void addMembroTeam(Utente utente) {this.membriTeam.add(utente);}
+    public void removeMembroTeam(Utente utente) {this.membriTeam.remove(utente);}
 }

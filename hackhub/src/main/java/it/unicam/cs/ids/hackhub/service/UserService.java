@@ -5,13 +5,30 @@ import it.unicam.cs.ids.hackhub.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public long createUtente(Utente utente){
-        Utente utenteCreato = userRepository.save(utente);
-        return utenteCreato.getID();
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public Utente createUtente(Utente utente){
+        return userRepository.save(utente);
+    }
+
+    public Utente getUtenteById(long id) {
+        Optional<Utente> user = userRepository.findById(id);
+        return user.orElseThrow(() -> new RuntimeException("Utente non trovato " +
+                "con id: " + id));
+    }
+
+    public Utente getUtenteByName(String name){
+        Optional<Utente> user = userRepository.findByNome(name);
+        return user.orElseThrow(() -> new RuntimeException("Utente non trovato " +
+                "con nome: " + name));
     }
 }
