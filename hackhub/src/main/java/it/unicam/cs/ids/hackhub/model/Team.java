@@ -13,7 +13,6 @@ public class Team {
     private Long ID;
 
     private String nomeTeam;
-    private boolean espulso = false;
 
     @OneToMany
     private List<Utente> membriTeam = new ArrayList<>();
@@ -31,17 +30,14 @@ public class Team {
         this.nomeTeam = nomeTeam;
     }
 
-    public boolean isEspulso() {
-        return espulso;
-    }
-
-    public void setEspulso(boolean espulso) {
-        this.espulso = espulso;
-    }
-
     public Utente getCapoTeam() {return capoTeam;}
 
-    public void setCapoTeam(Utente capoTeam) {this.capoTeam = capoTeam;}
+    public void setCapoTeam(Utente utente) {
+        if(!hasMembroTeam(utente))
+            throw new IllegalArgumentException("Il membro '"+utente.getNome()+
+                    "' non fa parte del Team, e non può quindi essere capo.");
+        this.capoTeam = utente;
+    }
 
     public List<Utente> getMembriTeam() {return membriTeam;}
 

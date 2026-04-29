@@ -1,15 +1,14 @@
 package it.unicam.cs.ids.hackhub.service;
 
+import it.unicam.cs.ids.hackhub.exception.api.ResourceNotFoundException;
 import it.unicam.cs.ids.hackhub.model.Team;
 import it.unicam.cs.ids.hackhub.model.Utente;
 import it.unicam.cs.ids.hackhub.repository.TeamRepository;
 import it.unicam.cs.ids.hackhub.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TeamService {
@@ -20,12 +19,14 @@ public class TeamService {
 
     public Team createTeam(long userId, String nomeTeam) {
         Utente utente =
-                userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Utente non trovato " +
+                userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(
+                        "Utente non trovato " +
                 "con id: " + userId));
         Team team = new Team();
         team.setNomeTeam(nomeTeam);
-        team.setCapoTeam(utente);
         team.addMembroTeam(utente);
+        team.setCapoTeam(utente);
+
         return teamRepository.save(team);
     }
 
@@ -35,13 +36,18 @@ public class TeamService {
 
     public void addMember(long userId, long teamId) {
         Utente utente =
-                userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Utente non trovato " +
+                userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(
+                        "Utente non trovato " +
                         "con id: " + userId));
         Team team =
-                teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException(
+                teamRepository.findById(teamId).orElseThrow(() -> new ResourceNotFoundException(
                         "Team non trovato " +
                         "con id: " + teamId));
 
+        addMember(utente, team);
+    }
+
+    public void addMember(Utente utente, Team team){
         team.addMembroTeam(utente);
         teamRepository.save(team);
     }

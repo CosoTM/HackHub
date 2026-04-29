@@ -1,8 +1,18 @@
 package it.unicam.cs.ids.hackhub.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.util.Date;
 
+@Entity
 public class Hackathon {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long ID;
     private String nome;
     private String regolamento;
     private Date scadenzaIscrizioni;

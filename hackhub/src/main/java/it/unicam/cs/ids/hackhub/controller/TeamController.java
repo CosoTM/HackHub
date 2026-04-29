@@ -23,7 +23,7 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
-    @PutMapping(value = "/addMember/{userId}/{teamId}")
+    @PostMapping(value = "/addMember/{userId}/{teamId}")
     public ResponseEntity<Object> addMember(@PathVariable("userId") long userId
             , @PathVariable("teamId") long teamId){
         teamService.addMember(userId, teamId);
