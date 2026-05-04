@@ -1,22 +1,24 @@
 package it.unicam.cs.ids.hackhub.model;
 
+import jakarta.persistence.*;
+
 import java.io.File;
 import java.util.Date;
 
+@Entity
 public class Sottomissione {
-    private File file;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long ID;
+
+    // private File file;
     private Date dataConsegna;
     private String giudizioScritto;
     private int voto;
+
+    @OneToOne
     private Team team;
-
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }
 
     public Date getDataConsegna() {
         return dataConsegna;

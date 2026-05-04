@@ -1,11 +1,9 @@
 package it.unicam.cs.ids.hackhub.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Hackathon {
@@ -22,7 +20,19 @@ public class Hackathon {
     private String luogo;
     private String premio;
     private int dimensioneMassimaTeam;
-    private CicloDiVita cicloDiVita;
+
+    @Enumerated(EnumType.STRING)
+    private StatoHackathon cicloDiVita;
+
+    @ManyToOne
+    private Utente organizzatore;
+    @ManyToOne
+    private Utente giudice;
+    @ManyToMany
+    private List<Utente> mentori;
+    @ManyToMany(mappedBy = "hackathon")
+    private List<Team> teamIscritti;
+
 
     public String getNome() {
         return nome;
@@ -60,7 +70,7 @@ public class Hackathon {
         return dimensioneMassimaTeam;
     }
 
-    public CicloDiVita getCicloDiVita() {
+    public StatoHackathon getCicloDiVita() {
         return cicloDiVita;
     }
 
@@ -100,7 +110,59 @@ public class Hackathon {
         this.dimensioneMassimaTeam = dimensioneMassimaTeam;
     }
 
-    public void setCicloDiVita(CicloDiVita cicloDiVita) {
+    public void setCicloDiVita(StatoHackathon cicloDiVita) {
         this.cicloDiVita = cicloDiVita;
     }
+
+    public Utente getOrganizzatore() {
+        return organizzatore;
+    }
+
+    public void setOrganizzatore(Utente organizzatore) {
+        this.organizzatore = organizzatore;
+    }
+
+    public Utente getGiudice() {
+        return giudice;
+    }
+
+    public void setGiudice(Utente giudice) {
+        this.giudice = giudice;
+    }
+
+    public List<Utente> getMentori() {
+        return mentori;
+    }
+
+    public void setMentori(List<Utente> mentori) {
+        this.mentori = mentori;
+    }
+
+    public void addMentore(Utente mentore){
+        // TODO: controllare se è mentore?
+        mentori.add(mentore);
+    }
+
+    public void removeMentore(Utente mentore){
+        mentori.remove(mentore);
+    }
+
+    public List<Team> getTeamIscritti() {
+        return teamIscritti;
+    }
+
+    public void setTeamIscritti(List<Team> teamIscritti) {
+        this.teamIscritti = teamIscritti;
+    }
+
+    public void addTeam(Team team){
+        teamIscritti.add(team);
+    }
+
+    public void removeTeam(Team team){
+        teamIscritti.add(team);
+    }
+
+
+
 }

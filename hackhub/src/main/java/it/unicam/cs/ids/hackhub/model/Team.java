@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Entity
 public class Team {
@@ -20,7 +21,10 @@ public class Team {
     @OneToOne
     private Utente capoTeam;
 
-    // private Hackathon hackathon;
+    private int penalizzazioni = 0;
+
+    @ManyToMany
+    private List<Hackathon> hackathon;
 
     public String getNomeTeam() {
         return nomeTeam;
@@ -46,5 +50,25 @@ public class Team {
     public boolean hasMembroTeam(Utente utente) {return this.membriTeam.contains(utente);}
 
     public void addMembroTeam(Utente utente) {this.membriTeam.add(utente);}
-    public void removeMembroTeam(Utente utente) {this.membriTeam.remove(utente);}
+    public void removeMembroTeam(Utente utente) {
+        this.membriTeam.remove(utente);
+        if(utente.equals(capoTeam)){
+            // TODO: ???
+            capoTeam = null;
+            Random r = new Random();
+            setCapoTeam(membriTeam.get(r.nextInt(membriTeam.size())));
+        }
+    }
+
+    public int getPenalizzazioni() {
+        return penalizzazioni;
+    }
+
+    public void setPenalizzazioni(int penalizzazioni) {
+        this.penalizzazioni = penalizzazioni;
+    }
+
+    public void penalizza(int punti){
+        penalizzazioni -= punti;
+    }
 }

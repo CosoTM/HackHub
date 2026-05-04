@@ -49,7 +49,7 @@ public class InvitoService {
                                 "con id: " + invitoId));
 
         Team teamInvitante = invito.getTeamInvitante();
-        teamService.addMember(utente, teamInvitante);
+        teamService.aggiungiMembro(utente, teamInvitante);
 
         return true;
     }

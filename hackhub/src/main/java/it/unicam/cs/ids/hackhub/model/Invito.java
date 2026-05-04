@@ -1,16 +1,16 @@
 package it.unicam.cs.ids.hackhub.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Invito {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ID;
+
+    @ManyToOne
     private Team teamInvitante;
+    @ManyToOne
     private Utente utenteInvitato;
 
     public Long getID() {
