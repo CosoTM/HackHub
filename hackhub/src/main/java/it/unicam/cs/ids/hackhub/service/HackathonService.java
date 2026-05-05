@@ -2,15 +2,14 @@ package it.unicam.cs.ids.hackhub.service;
 
 import it.unicam.cs.ids.hackhub.exception.api.ForbiddenOperationException;
 import it.unicam.cs.ids.hackhub.exception.api.ResourceNotFoundException;
-import it.unicam.cs.ids.hackhub.model.Hackathon;
-import it.unicam.cs.ids.hackhub.model.Team;
-import it.unicam.cs.ids.hackhub.model.Utente;
-import it.unicam.cs.ids.hackhub.model.UtenteType;
+import it.unicam.cs.ids.hackhub.model.*;
 import it.unicam.cs.ids.hackhub.repository.HackathonRepository;
 import it.unicam.cs.ids.hackhub.repository.TeamRepository;
 import it.unicam.cs.ids.hackhub.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class HackathonService {
@@ -41,5 +40,24 @@ public class HackathonService {
         team.penalizza(penalizzazione);
 
         teamRepository.save(team);
+    }
+
+    public List<Hackathon> getAllHackathons() {
+        List<Hackathon> hs = hackathonRepository.findAll();
+        return hs;
+    }
+
+    public Hackathon getHackathonById(long hackathonID) {
+        return findHackathonOrThrow(hackathonID);
+    }
+
+    private Hackathon findHackathonOrThrow(long id){
+        return hackathonRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                "Hackathon non trovato con id: "+ id));
+    }
+
+    public List<Hackathon> getOngoingHackathons() {
+        List<Hackathon> hs = hackathonRepository.findByStato(StatoHackathon.ISCRIZIONE);
+        return hs;
     }
 }
