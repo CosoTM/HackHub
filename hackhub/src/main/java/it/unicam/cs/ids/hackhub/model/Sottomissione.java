@@ -14,11 +14,13 @@ public class Sottomissione {
 
     // private File file;
     private Date dataConsegna;
-    private String giudizioScritto;
-    private int voto;
-
+    @OneToOne
+    private Valutazione valutazione;
+    private boolean inviata;
     @OneToOne
     private Team team;
+    @OneToOne
+    private Hackathon hackathon;
 
     public Date getDataConsegna() {
         return dataConsegna;
@@ -28,20 +30,20 @@ public class Sottomissione {
         this.dataConsegna = dataConsegna;
     }
 
-    public String getGiudizioScritto() {
-        return giudizioScritto;
+    public Valutazione getValutazione() {
+        return valutazione;
     }
 
-    public void setGiudizioScritto(String giudizioScritto) {
-        this.giudizioScritto = giudizioScritto;
+    public void setValutazione(Valutazione valutazione) {
+        this.valutazione = valutazione;
     }
 
-    public int getVoto() {
-        return voto;
+    public boolean isInviata() {
+        return inviata;
     }
 
-    public void setVoto(int voto) {
-        this.voto = voto;
+    public void setInviata(boolean inviata) {
+        this.inviata = inviata;
     }
 
     public Team getTeam() {
@@ -50,5 +52,13 @@ public class Sottomissione {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public Hackathon getHackathon() {
+        return hackathon;
+    }
+
+    public void setHackathon(Hackathon hackathon) {
+        this.hackathon = hackathon;
     }
 }

@@ -17,9 +17,9 @@ public class InvitoController {
     @Autowired
     private InvitoService invitoService;
 
-    @GetMapping(value = "/{userId}/inviti")
-    public ResponseEntity<List<Invito>> getAllInvitiForUser(@PathVariable(
-            "userId") long userId){
+    @GetMapping(value = "/inviti")
+    public ResponseEntity<List<Invito>> getAllInvitiForUser(
+            @RequestParam long userId){
         List<Invito> saved = invitoService.getAllInvitiForUser(userId);
         return ResponseEntity.status(HttpStatus.OK).body(saved);
     }
