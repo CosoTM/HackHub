@@ -21,15 +21,6 @@ public class TeamService {
     @Autowired
     private HackathonRepository hackathonRepository;
 
-    private Team findTeamOrThrow(long id){
-        return teamRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
-                "Team non trovato con id: "+ id));
-    }
-    private Utente findUserOrThrow(long id){
-        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
-                "Utente non trovato " + "con id: " + id));
-    }
-
     public Team createTeam(long userId, String nomeTeam) {
         Utente utente = findUserOrThrow(userId);
 
@@ -45,8 +36,6 @@ public class TeamService {
     }
 
     public List<Team> getAllTeams(long hackathonID){
-        // TODO: se non ci sono team iscritti all'hackathon? Dovrebbe
-        //  restituire qualcos'altro
         return teamRepository.findByHackathonIscritti_ID(hackathonID);
     }
 
@@ -84,5 +73,14 @@ public class TeamService {
     public void aggiungiMembro(Utente utente, Team team){
         team.addMembroTeam(utente);
         teamRepository.save(team);
+    }
+
+    private Team findTeamOrThrow(long id){
+        return teamRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                "Team non trovato con id: "+ id));
+    }
+    private Utente findUserOrThrow(long id){
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                "Utente non trovato " + "con id: " + id));
     }
 }

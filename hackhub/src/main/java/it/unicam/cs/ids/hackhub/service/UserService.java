@@ -15,16 +15,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private Utente findUserOrThrow(long id){
-        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
-                "Utente non trovato " + "con id: " + id));
-    }
-
-    private Utente findUserOrThrow(String name){
-        return userRepository.findByNome(name).orElseThrow(() -> new ResourceNotFoundException(
-                "Utente non trovato " + "con nome: " + name));
-    }
-
     public Utente registraUtente(String nome, String email, String password){
 
         Utente esistente = userRepository.findByEmail(email).orElse(null);
@@ -45,5 +35,15 @@ public class UserService {
 
     public Utente getUtenteByName(String name){
         return findUserOrThrow(name);
+    }
+
+    private Utente findUserOrThrow(long id){
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                "Utente non trovato " + "con id: " + id));
+    }
+
+    private Utente findUserOrThrow(String name){
+        return userRepository.findByNome(name).orElseThrow(() -> new ResourceNotFoundException(
+                "Utente non trovato " + "con nome: " + name));
     }
 }

@@ -9,6 +9,7 @@ public record CreaHackathonRequest(
         String luogo,
         Date dataInizio,
         Date dataFine,
+        Date scadenzaIscrizioni,
         Date scadenzaSottomissioni,
         float premio,
         int dimensioneMassimoTeam,

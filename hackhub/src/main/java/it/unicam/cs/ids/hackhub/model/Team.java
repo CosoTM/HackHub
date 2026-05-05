@@ -71,4 +71,22 @@ public class Team {
     public void penalizza(int punti){
         penalizzazioni -= punti;
     }
+
+    public List<Hackathon> getHackathonIscritti() {
+        return hackathonIscritti;
+    }
+
+    public void setHackathonIscritti(List<Hackathon> hackathonIscritti) {
+        this.hackathonIscritti = hackathonIscritti;
+    }
+
+    public void addHackathonIscritto(Hackathon hackathon){
+        hackathonIscritti.add(hackathon);
+    }
+
+    public void removeHackathonIscritto(Hackathon hackathon){
+        hackathonIscritti.remove(hackathon);
+    }
+
+
 }

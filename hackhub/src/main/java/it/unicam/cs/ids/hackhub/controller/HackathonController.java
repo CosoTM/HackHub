@@ -2,6 +2,7 @@ package it.unicam.cs.ids.hackhub.controller;
 
 import it.unicam.cs.ids.hackhub.dto.request.*;
 import it.unicam.cs.ids.hackhub.model.Hackathon;
+import it.unicam.cs.ids.hackhub.model.hackathonBuilder.ConcreteHackathonBuilder;
 import it.unicam.cs.ids.hackhub.repository.HackathonRepository;
 import it.unicam.cs.ids.hackhub.service.HackathonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,36 +39,45 @@ public class HackathonController {
 
     @PostMapping(value = "/create")
     public ResponseEntity<Hackathon> createHackathon(@RequestBody CreaHackathonRequest creaHackathonRequest){
-        return null;
+        Hackathon h = hackathonService.createHackathon(creaHackathonRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(h);
     }
 
     @PutMapping(value = "/{hackathonID}/iscriviTeam")
-    public ResponseEntity<List<Hackathon>> iscriviTeam(
+    public ResponseEntity<Boolean> iscriviTeam(
             @PathVariable("hackathonID") long hackathonID,
             @RequestBody IscriviTeamRequest iscriviTeamRequest){
-        return null;
+
+        hackathonService.iscriviTeam(hackathonID, iscriviTeamRequest.teamID(),
+                iscriviTeamRequest.capoID());
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 
     @PutMapping(value = "/{hackathonID}/penalizza")
-    public ResponseEntity<Boolean> penalizzaTeam(@PathVariable("hackathonID") long teamID,
+    public ResponseEntity<Boolean> penalizzaTeam(@PathVariable("hackathonID") long hackathonID,
                                                  @RequestBody PenalizzaTeamRequest penalizzaTeamRequest){
-        hackathonService.penalizzaTeam(teamID, penalizzaTeamRequest.staffID(),
+        hackathonService.penalizzaTeam(hackathonID, penalizzaTeamRequest.staffID(),
                 penalizzaTeamRequest.teamID(),
                 penalizzaTeamRequest.penalizzazione());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping(value = "/{hackathonID}/banna")
-    public ResponseEntity<Boolean> bannaTeam(@PathVariable("hackathonID") long teamID,
-                                         @RequestBody BannaTeamRequest penalizzaTeamRequest){
-       return null;
+    public ResponseEntity<Boolean> bannaTeam(@PathVariable("hackathonID") long hackathonID,
+                                         @RequestBody BannaTeamRequest bannaTeamRequest){
+       hackathonService.bannaTeam(hackathonID, bannaTeamRequest.staffID(),
+               bannaTeamRequest.teamID());
+       return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping(value = "/{hackathonID}/vincitore")
-    public ResponseEntity<Boolean> proclamaVincitore(@PathVariable("hackathonID") long teamID,
+    public ResponseEntity<Boolean> proclamaVincitore(@PathVariable("hackathonID") long hackathonID,
                                              @RequestBody ProclamaVincitoreRequest proclamaVincitoreRequest){
-        return null;
+        hackathonService.proclamaVincitore(hackathonID,
+                proclamaVincitoreRequest.teamID(),
+                proclamaVincitoreRequest.organizzatoreID());
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

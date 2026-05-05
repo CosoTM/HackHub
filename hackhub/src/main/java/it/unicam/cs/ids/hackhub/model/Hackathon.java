@@ -2,6 +2,7 @@ package it.unicam.cs.ids.hackhub.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,11 +19,11 @@ public class Hackathon {
     private Date dataFine;
     private Date scadenzaSottomissioni;
     private String luogo;
-    private String premio;
+    private float premio;
     private int dimensioneMassimaTeam;
 
     @Enumerated(EnumType.STRING)
-    private StatoHackathon cicloDiVita;
+    private StatoHackathon statoHackathon;
 
     @ManyToOne
     private Utente organizzatore;
@@ -32,7 +33,13 @@ public class Hackathon {
     private List<Utente> mentori;
     @ManyToMany(mappedBy = "hackathonIscritti")
     private List<Team> teamIscritti;
+    @ManyToMany
+    private List<Utente> utentiEsclusi;
 
+    public Hackathon() {
+        this.teamIscritti = new ArrayList<>();
+        this.utentiEsclusi = new ArrayList<>();
+    }
 
     public String getNome() {
         return nome;
@@ -62,7 +69,7 @@ public class Hackathon {
         return luogo;
     }
 
-    public String getPremio() {
+    public float getPremio() {
         return premio;
     }
 
@@ -70,8 +77,8 @@ public class Hackathon {
         return dimensioneMassimaTeam;
     }
 
-    public StatoHackathon getCicloDiVita() {
-        return cicloDiVita;
+    public StatoHackathon getStatoHackathon() {
+        return statoHackathon;
     }
 
     public void setNome(String nome) {
@@ -102,7 +109,7 @@ public class Hackathon {
         this.luogo = luogo;
     }
 
-    public void setPremio(String premio) {
+    public void setPremio(float premio) {
         this.premio = premio;
     }
 
@@ -110,8 +117,8 @@ public class Hackathon {
         this.dimensioneMassimaTeam = dimensioneMassimaTeam;
     }
 
-    public void setCicloDiVita(StatoHackathon cicloDiVita) {
-        this.cicloDiVita = cicloDiVita;
+    public void setStatoHackathon(StatoHackathon statoHackathon) {
+        this.statoHackathon = statoHackathon;
     }
 
     public Utente getOrganizzatore() {
@@ -155,6 +162,10 @@ public class Hackathon {
         this.teamIscritti = teamIscritti;
     }
 
+    public boolean hasTeamIscritto(Team team){
+        return teamIscritti.contains(team);
+    }
+
     public void addTeam(Team team){
         teamIscritti.add(team);
     }
@@ -163,6 +174,27 @@ public class Hackathon {
         teamIscritti.add(team);
     }
 
+    public List<Utente> getUtentiEsclusi() {
+        return utentiEsclusi;
+    }
 
+    public void setUtentiEsclusi(List<Utente> utentiEsclusi) {
+        this.utentiEsclusi = utentiEsclusi;
+    }
 
+    public boolean hasUtenteEscluso(Utente utente){
+        return utentiEsclusi.contains(utente);
+    }
+
+    public void addUtenteEscluso(Utente utente){
+        utentiEsclusi.add(utente);
+    }
+
+    public void removeUtenteEscluso(Utente utente){
+        utentiEsclusi.remove(utente);
+    }
+
+    public boolean isStaff(Utente utente){
+        return utente.equals(organizzatore) || utente.equals(giudice) || mentori.contains(utente);
+    }
 }
