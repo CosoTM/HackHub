@@ -24,7 +24,7 @@ public class Team {
     private int penalizzazioni = 0;
 
     @ManyToMany
-    private List<Hackathon> hackathon;
+    private List<Hackathon> hackathonIscritti;
 
     public String getNomeTeam() {
         return nomeTeam;

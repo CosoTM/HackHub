@@ -30,7 +30,7 @@ public class Hackathon {
     private Utente giudice;
     @ManyToMany
     private List<Utente> mentori;
-    @ManyToMany(mappedBy = "hackathon")
+    @ManyToMany(mappedBy = "hackathonIscritti")
     private List<Team> teamIscritti;
 
 

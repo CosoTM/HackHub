@@ -1,5 +1,6 @@
 package it.unicam.cs.ids.hackhub.controller;
 
+import it.unicam.cs.ids.hackhub.dto.request.RegistraUtenteRequest;
 import it.unicam.cs.ids.hackhub.model.Utente;
 import it.unicam.cs.ids.hackhub.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/create")
-    public ResponseEntity<Utente> createUtente(@RequestBody Utente utente){
-        Utente saved = userService.createUtente(utente);
+    @PostMapping(value = "/registra")
+    public ResponseEntity<Utente> registraUtente(@RequestBody RegistraUtenteRequest registraUtenteRequest){
+        Utente saved = userService.registraUtente(registraUtenteRequest.nome(),
+                registraUtenteRequest.email(), registraUtenteRequest.password());
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 

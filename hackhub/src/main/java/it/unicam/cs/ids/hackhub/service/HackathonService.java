@@ -1,6 +1,6 @@
 package it.unicam.cs.ids.hackhub.service;
 
-import it.unicam.cs.ids.hackhub.exception.ForbiddenOperationException;
+import it.unicam.cs.ids.hackhub.exception.api.ForbiddenOperationException;
 import it.unicam.cs.ids.hackhub.exception.api.ResourceNotFoundException;
 import it.unicam.cs.ids.hackhub.model.Hackathon;
 import it.unicam.cs.ids.hackhub.model.Team;

@@ -18,7 +18,8 @@ public class Utente {
     @Enumerated(EnumType.STRING)
     private List<UtenteType> tipoUtente = new ArrayList<>();
 
-    // private Team team;
+    @ManyToOne
+    private Team team;
 
     public long getID() {
         return ID;
@@ -54,5 +55,12 @@ public class Utente {
     public boolean hasTipoUtente(UtenteType tipo){return tipoUtente.contains(tipo);}
     public void addTipoUtente(UtenteType tipo){tipoUtente.add(tipo);}
     public void removeTipoUtente(UtenteType tipo){tipoUtente.remove(tipo);}
-    /* public Team getTeam() {return team;}*/
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 }

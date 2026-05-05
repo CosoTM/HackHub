@@ -3,7 +3,6 @@ package it.unicam.cs.ids.hackhub.controller;
 import it.unicam.cs.ids.hackhub.dto.request.AbbandonaTeamRequest;
 import it.unicam.cs.ids.hackhub.dto.request.CreaTeamRequest;
 import it.unicam.cs.ids.hackhub.dto.request.EspelliMembroRequest;
-import it.unicam.cs.ids.hackhub.dto.request.PenalizzaTeamRequest;
 import it.unicam.cs.ids.hackhub.model.Team;
 import it.unicam.cs.ids.hackhub.service.TeamService;
 import jakarta.websocket.server.PathParam;
@@ -20,10 +19,9 @@ public class TeamController {
     @Autowired
     private TeamService teamService;
 
-
     @GetMapping(value = "/")
     public ResponseEntity<List<Team>> getAllTeams(@PathParam("hackathonId") long hackathonId){
-        List<Team> teams = teamService.getAllTeams();
+        List<Team> teams = teamService.getAllTeams(hackathonId);
         return ResponseEntity.status(HttpStatus.OK).body(teams);
     }
 
