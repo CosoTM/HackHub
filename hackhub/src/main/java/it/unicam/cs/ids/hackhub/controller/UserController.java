@@ -3,6 +3,7 @@ package it.unicam.cs.ids.hackhub.controller;
 import it.unicam.cs.ids.hackhub.dto.request.RegistraUtenteRequest;
 import it.unicam.cs.ids.hackhub.model.Utente;
 import it.unicam.cs.ids.hackhub.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(value = "/registra")
-    public ResponseEntity<Utente> registraUtente(@RequestBody RegistraUtenteRequest registraUtenteRequest){
+    public ResponseEntity<Utente> registraUtente(
+            @Valid @RequestBody RegistraUtenteRequest registraUtenteRequest){
         Utente saved = userService.registraUtente(registraUtenteRequest.nome(),
                 registraUtenteRequest.email(), registraUtenteRequest.password());
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);

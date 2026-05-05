@@ -28,7 +28,7 @@ public class UserService {
     public Utente registraUtente(String nome, String email, String password){
 
         Utente esistente = userRepository.findByEmail(email).orElse(null);
-        if(esistente == null)
+        if(esistente != null)
             throw new AlreadyExistsException("Un utente con la stessa email esiste già. Inseriscine un'altra");
 
         Utente registrato = new Utente();
