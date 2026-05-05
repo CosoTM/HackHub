@@ -25,7 +25,9 @@ public class SottomissioniService {
         Hackathon hackathon = findHackathonOrThrow(hackathonID);
         Utente staff = findUserOrThrow(staffID);
 
-       checkIfStaff(staff);
+        checkIfStaff(staff);
+
+        if(!hackathon.isStaff(staff)) throw new ForbiddenOperationException("Non sei parte dello Staff dell'Hackathon");
 
         return sottomissioneRepository.findByHackathon(hackathon);
     }
