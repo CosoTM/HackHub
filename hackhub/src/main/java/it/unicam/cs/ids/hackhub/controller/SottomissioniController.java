@@ -39,7 +39,7 @@ public class SottomissioniController {
     @PutMapping(value = "/{sottomissioneID}/send")
     public ResponseEntity<Boolean> inviaSottomissione(
             @PathVariable("sottomissioneID") long sottomissioneID,
-            InviaSottomissioneRequest inviaSottomissioneRequest
+            @RequestBody InviaSottomissioneRequest inviaSottomissioneRequest
     ){
         sottomissioniService.inviaSottomissione(sottomissioneID, inviaSottomissioneRequest.membroID());
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -48,7 +48,7 @@ public class SottomissioniController {
     @PutMapping(value = "/{sottomissioneID}/evaluate")
     public ResponseEntity<Valutazione> valutaSottomissione(
             @PathVariable("sottomissioneID") long sottomissioneID,
-            ValutaSottomissioneRequest valutaSottomissioneRequest
+            @RequestBody ValutaSottomissioneRequest valutaSottomissioneRequest
     ){
         Valutazione valutazione =
                 sottomissioniService.valutaSottomissione(sottomissioneID,

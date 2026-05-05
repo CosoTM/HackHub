@@ -145,8 +145,11 @@ public class Hackathon {
         this.mentori = mentori;
     }
 
+    public boolean hasMentore(Utente mentore){
+        return mentori.contains(mentore);
+    }
+
     public void addMentore(Utente mentore){
-        // TODO: controllare se è mentore?
         mentori.add(mentore);
     }
 
