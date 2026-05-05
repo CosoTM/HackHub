@@ -5,6 +5,7 @@ import it.unicam.cs.ids.hackhub.dto.request.ValutaSottomissioneRequest;
 import it.unicam.cs.ids.hackhub.model.Sottomissione;
 import it.unicam.cs.ids.hackhub.model.Valutazione;
 import it.unicam.cs.ids.hackhub.service.SottomissioniService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class SottomissioniController {
     @PutMapping(value = "/{sottomissioneID}/send")
     public ResponseEntity<Boolean> inviaSottomissione(
             @PathVariable("sottomissioneID") long sottomissioneID,
-            @RequestBody InviaSottomissioneRequest inviaSottomissioneRequest
+            @Valid @RequestBody InviaSottomissioneRequest inviaSottomissioneRequest
     ){
         sottomissioniService.inviaSottomissione(sottomissioneID, inviaSottomissioneRequest.membroID());
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -48,7 +49,7 @@ public class SottomissioniController {
     @PutMapping(value = "/{sottomissioneID}/evaluate")
     public ResponseEntity<Valutazione> valutaSottomissione(
             @PathVariable("sottomissioneID") long sottomissioneID,
-            @RequestBody ValutaSottomissioneRequest valutaSottomissioneRequest
+            @Valid @RequestBody ValutaSottomissioneRequest valutaSottomissioneRequest
     ){
         Valutazione valutazione =
                 sottomissioniService.valutaSottomissione(sottomissioneID,

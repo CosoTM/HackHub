@@ -4,6 +4,7 @@ import it.unicam.cs.ids.hackhub.dto.request.RispondiRichiestaRequest;
 import it.unicam.cs.ids.hackhub.model.RichiestaSupporto;
 import it.unicam.cs.ids.hackhub.model.RispostaSupporto;
 import it.unicam.cs.ids.hackhub.service.RichiestaSupportoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class RichiestaSupportoController {
     @PutMapping(value = "/{richiestaID}/reply")
     public ResponseEntity<RispostaSupporto> rispondiRichiestaSupporto(
             @PathVariable("richiestaID") long richiestaID,
-            @RequestBody RispondiRichiestaRequest rispondiRichiestaRequest
+            @Valid @RequestBody RispondiRichiestaRequest rispondiRichiestaRequest
     ){
         RispostaSupporto risposta =
                 richiestaSupportoService.rispondiRichiestaSupporto(

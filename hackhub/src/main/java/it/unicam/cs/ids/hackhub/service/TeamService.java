@@ -39,6 +39,10 @@ public class TeamService {
         return teamRepository.findByHackathonIscritti_ID(hackathonID);
     }
 
+    public Team getTeamByID(long teamID) {
+        return findTeamOrThrow(teamID);
+    }
+
     public void espelliMembro(long teamID, long capoID, long userEspulsoID){
         Team team = findTeamOrThrow(teamID);
         Utente capo = findUserOrThrow(capoID);
@@ -83,4 +87,6 @@ public class TeamService {
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
                 "Utente non trovato " + "con id: " + id));
     }
+
+
 }

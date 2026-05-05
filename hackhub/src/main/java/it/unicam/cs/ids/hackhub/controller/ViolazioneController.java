@@ -4,6 +4,8 @@ import it.unicam.cs.ids.hackhub.dto.request.SegnalaTeamRequest;
 import it.unicam.cs.ids.hackhub.model.Sottomissione;
 import it.unicam.cs.ids.hackhub.model.Violazione;
 import it.unicam.cs.ids.hackhub.service.ViolazioneService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/violazioni")
 public class ViolazioneController {
+    @Autowired
     private ViolazioneService violazioneService;
 
     @GetMapping(value = "/")
@@ -26,7 +29,7 @@ public class ViolazioneController {
     }
 
     @GetMapping(value = "/{violazioneID}")
-    public ResponseEntity<Violazione> getSottomissioneById(
+    public ResponseEntity<Violazione> getViolazioneById(
             @PathVariable("violazioneID") long violazioneID,
             @RequestParam long staffID
     ){
@@ -38,7 +41,7 @@ public class ViolazioneController {
 
     @PostMapping(value = "/report")
     public ResponseEntity<Violazione> segnalaTeam(
-            @RequestBody SegnalaTeamRequest segnalaTeamRequest
+            @Valid @RequestBody SegnalaTeamRequest segnalaTeamRequest
     ){
         Violazione violazione = violazioneService.segnalaTeam(
                 segnalaTeamRequest.mentoreID(),

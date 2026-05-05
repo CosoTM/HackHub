@@ -30,13 +30,8 @@ public class InvitoService {
     }
 
     public List<Invito> getAllInvitiForUser(Long userId){
-        List<Invito> allInviti = invitoRepository.findAll();
-
-        List<Invito> invitiPerUser = new ArrayList<>();
-
-        // TODO: Filtra inviti
-
-        return invitiPerUser;
+        Utente utente = findUserOrThrow(userId);
+        return invitoRepository.findByUtenteInvitato(utente);
     }
 
     public boolean accettaInvito(long invitoId, long userId) {

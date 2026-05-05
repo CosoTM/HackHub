@@ -5,6 +5,7 @@ import it.unicam.cs.ids.hackhub.model.Hackathon;
 import it.unicam.cs.ids.hackhub.model.hackathonBuilder.ConcreteHackathonBuilder;
 import it.unicam.cs.ids.hackhub.repository.HackathonRepository;
 import it.unicam.cs.ids.hackhub.service.HackathonService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class HackathonController {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Hackathon> createHackathon(@RequestBody CreaHackathonRequest creaHackathonRequest){
+    public ResponseEntity<Hackathon> createHackathon(@Valid @RequestBody CreaHackathonRequest creaHackathonRequest){
         Hackathon h = hackathonService.createHackathon(creaHackathonRequest);
         return ResponseEntity.status(HttpStatus.OK).body(h);
     }
@@ -56,7 +57,7 @@ public class HackathonController {
 
     @PutMapping(value = "/{hackathonID}/penalize")
     public ResponseEntity<Boolean> penalizzaTeam(@PathVariable("hackathonID") long hackathonID,
-                                                 @RequestBody PenalizzaTeamRequest penalizzaTeamRequest){
+                                                 @Valid @RequestBody PenalizzaTeamRequest penalizzaTeamRequest){
         hackathonService.penalizzaTeam(hackathonID, penalizzaTeamRequest.staffID(),
                 penalizzaTeamRequest.teamID(),
                 penalizzaTeamRequest.penalizzazione());
@@ -65,7 +66,7 @@ public class HackathonController {
 
     @PutMapping(value = "/{hackathonID}/ban")
     public ResponseEntity<Boolean> bannaTeam(@PathVariable("hackathonID") long hackathonID,
-                                         @RequestBody BannaTeamRequest bannaTeamRequest){
+                                             @Valid @RequestBody BannaTeamRequest bannaTeamRequest){
        hackathonService.bannaTeam(hackathonID, bannaTeamRequest.staffID(),
                bannaTeamRequest.teamID());
        return ResponseEntity.status(HttpStatus.OK).build();
@@ -73,7 +74,7 @@ public class HackathonController {
 
     @PutMapping(value = "/{hackathonID}/winner")
     public ResponseEntity<Boolean> proclamaVincitore(@PathVariable("hackathonID") long hackathonID,
-                                             @RequestBody ProclamaVincitoreRequest proclamaVincitoreRequest){
+                                                     @Valid @RequestBody ProclamaVincitoreRequest proclamaVincitoreRequest){
         hackathonService.proclamaVincitore(hackathonID,
                 proclamaVincitoreRequest.teamID(),
                 proclamaVincitoreRequest.organizzatoreID());
