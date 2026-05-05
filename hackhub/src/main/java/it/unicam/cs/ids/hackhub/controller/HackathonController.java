@@ -43,7 +43,7 @@ public class HackathonController {
         return ResponseEntity.status(HttpStatus.OK).body(h);
     }
 
-    @PutMapping(value = "/{hackathonID}/iscriviTeam")
+    @PutMapping(value = "/{hackathonID}/subscribe")
     public ResponseEntity<Boolean> iscriviTeam(
             @PathVariable("hackathonID") long hackathonID,
             @RequestBody IscriviTeamRequest iscriviTeamRequest){
@@ -54,7 +54,7 @@ public class HackathonController {
     }
 
 
-    @PutMapping(value = "/{hackathonID}/penalizza")
+    @PutMapping(value = "/{hackathonID}/penalize")
     public ResponseEntity<Boolean> penalizzaTeam(@PathVariable("hackathonID") long hackathonID,
                                                  @RequestBody PenalizzaTeamRequest penalizzaTeamRequest){
         hackathonService.penalizzaTeam(hackathonID, penalizzaTeamRequest.staffID(),
@@ -63,7 +63,7 @@ public class HackathonController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping(value = "/{hackathonID}/banna")
+    @PutMapping(value = "/{hackathonID}/ban")
     public ResponseEntity<Boolean> bannaTeam(@PathVariable("hackathonID") long hackathonID,
                                          @RequestBody BannaTeamRequest bannaTeamRequest){
        hackathonService.bannaTeam(hackathonID, bannaTeamRequest.staffID(),
@@ -71,7 +71,7 @@ public class HackathonController {
        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping(value = "/{hackathonID}/vincitore")
+    @PutMapping(value = "/{hackathonID}/winner")
     public ResponseEntity<Boolean> proclamaVincitore(@PathVariable("hackathonID") long hackathonID,
                                              @RequestBody ProclamaVincitoreRequest proclamaVincitoreRequest){
         hackathonService.proclamaVincitore(hackathonID,

@@ -1,5 +1,7 @@
 package it.unicam.cs.ids.hackhub.controller;
 
+import it.unicam.cs.ids.hackhub.dto.request.AccettaInvitoRequest;
+import it.unicam.cs.ids.hackhub.dto.request.InvitaUtenteRequest;
 import it.unicam.cs.ids.hackhub.model.Invito;
 import it.unicam.cs.ids.hackhub.service.InvitoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,23 +17,31 @@ public class InvitoController {
     @Autowired
     private InvitoService invitoService;
 
-    @GetMapping(value = "/getInvitoById/{id}")
-    public ResponseEntity<Invito> getInvitoById(@PathVariable("id") long id){
-        Invito saved = invitoService.getInvitoById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(saved);
-    }
-
-    @GetMapping(value = "/getAllInvitiForUser/{userId}")
+    @GetMapping(value = "/{userId}/inviti")
     public ResponseEntity<List<Invito>> getAllInvitiForUser(@PathVariable(
             "userId") long userId){
         List<Invito> saved = invitoService.getAllInvitiForUser(userId);
         return ResponseEntity.status(HttpStatus.OK).body(saved);
     }
 
-    @PostMapping(value = "/accettaInvito/{userId}/{invitoId}")
-    public ResponseEntity<Boolean> accettaInvito(@PathVariable("userId") long userId,
-                                                 @PathVariable("invitoId") long invitoId) {
-        invitoService.accettaInvito(userId, invitoId);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Invito> getInvitoById(@PathVariable("id") long id){
+        Invito saved = invitoService.getInvitoById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(saved);
+    }
+
+
+    @PutMapping(value = "/{invitoID}/accetta")
+    public ResponseEntity<Boolean> accettaInvito(@PathVariable("invitoID") long invitoId,
+                                                @RequestBody AccettaInvitoRequest accettaInvitoRequest) {
+        invitoService.accettaInvito(invitoId, accettaInvitoRequest.userID());
         return ResponseEntity.status(HttpStatus.OK).body(true);
+    }
+
+    @PostMapping(value = "/invite")
+    public ResponseEntity<Invito> invitaUtente(@RequestBody InvitaUtenteRequest invitaUtenteRequest) {
+        Invito invito = invitoService.invitaUtente(invitaUtenteRequest.teamID(),
+                invitaUtenteRequest.capoID(), invitaUtenteRequest.userInvitatoID());
+        return ResponseEntity.status(HttpStatus.OK).body(invito);
     }
 }

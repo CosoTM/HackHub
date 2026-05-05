@@ -31,7 +31,7 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @PutMapping(value = "/{teamID}/espelli")
+    @PutMapping(value = "/{teamID}/expel")
     public ResponseEntity<Void> espelliMembro(@PathVariable("teamID") long teamID,
                                            @RequestBody EspelliMembroRequest espelliMembroRequest){
         teamService.espelliMembro(teamID, espelliMembroRequest.capoID(),
@@ -39,7 +39,7 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping(value = "/{teamID}/abbandona")
+    @PutMapping(value = "/{teamID}/leave")
     public ResponseEntity<Boolean> abbandonaTeam(@PathVariable("teamID") long teamID, @RequestBody AbbandonaTeamRequest abbandonaTeamRequest){
         teamService.abbandonaTeam(teamID, abbandonaTeamRequest.membroID());
         return ResponseEntity.status(HttpStatus.OK).build();

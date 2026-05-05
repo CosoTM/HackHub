@@ -15,7 +15,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/registra")
+    @PostMapping(value = "/register")
     public ResponseEntity<Utente> registraUtente(
             @Valid @RequestBody RegistraUtenteRequest registraUtenteRequest){
         Utente saved = userService.registraUtente(registraUtenteRequest.nome(),
