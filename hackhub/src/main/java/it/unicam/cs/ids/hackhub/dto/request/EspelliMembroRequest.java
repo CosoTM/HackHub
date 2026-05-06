@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotNull;
 
 public record EspelliMembroRequest(
         @NotNull(message = "L'ID del capo è obbligatorio")
-        long capoID,
+        Long capoID,
 
         @NotNull(message = "L'ID del espulso è obbligatorio")
-        long userEspulsoID) {
+        Long userEspulsoID) {
 }

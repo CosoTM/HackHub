@@ -4,6 +4,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record AccettaInvitoRequest(
         @NotNull(message = "L'ID è obbligatorio")
-        long userID
+        Long userID
 ) {
 }

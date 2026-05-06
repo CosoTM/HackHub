@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record CreaTeamRequest(
         @NotNull(message = "L'ID è obbligatorio")
-        long userID,
+        Long userID,
         @NotBlank(message = "Il nome del team è obbligatorio")
         String nomeTeam) {
 

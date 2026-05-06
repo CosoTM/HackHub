@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotNull;
 
 public record SegnalaTeamRequest(
         @NotNull(message = "L'ID è obbligatorio")
-        long mentoreID,
+        Long mentoreID,
         @NotNull(message = "L'ID è obbligatorio")
-        long teamID,
+        Long teamID,
         @NotNull(message = "L'ID è obbligatorio")
-        long hackathonID,
+        Long hackathonID,
         @NotBlank(message = "Il motivo della segnalazione è obbligatoria")
         String motivoSegnalazione
 ) {

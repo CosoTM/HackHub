@@ -1,5 +1,6 @@
 package it.unicam.cs.ids.hackhub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class Utente {
     private List<UtenteType> tipoUtente = new ArrayList<>();
 
     @ManyToOne
+    @JsonIgnore
     private Team team;
 
     public long getID() {

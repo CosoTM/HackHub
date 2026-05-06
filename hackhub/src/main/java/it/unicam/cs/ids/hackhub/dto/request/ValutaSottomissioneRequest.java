@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record ValutaSottomissioneRequest(
         @NotNull(message = "L'ID è obbligatorio")
-        long giudiceID,
+        Long giudiceID,
         String giudizioScritto,
 
         @NotNull(message = "Il punteggio è obbligatorio")

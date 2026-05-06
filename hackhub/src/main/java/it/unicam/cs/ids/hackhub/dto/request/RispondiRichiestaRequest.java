@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record RispondiRichiestaRequest(
         @NotNull(message = "L'ID è obbligatorio")
-        long mentoreID,
+        Long mentoreID,
         @NotBlank(message = "la risposta è obbligatoria")
         String risposta
 ) {

@@ -49,6 +49,7 @@ public class InvitoService {
         }
 
         teamService.aggiungiMembro(utente, teamInvitante);
+        invitoRepository.delete(invito);
 
         return true;
     }
@@ -58,6 +59,7 @@ public class InvitoService {
         Utente capo = findUserOrThrow(capoID);
         Utente utente = findUserOrThrow(userID);
 
+        if(!team.hasMembroTeam(capo)) throw new ForbiddenOperationException("Non fai parte del team");
         if(!team.getCapoTeam().equals(capo)) throw new ForbiddenOperationException("Non sei il capo del team");
         if(team.hasMembroTeam(utente)) throw new ConflictException(utente.getEmail()+" fa gia parte del team");
 

@@ -26,6 +26,14 @@ public class Team {
     @ManyToMany
     private List<Hackathon> hackathonIscritti;
 
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
     public String getNomeTeam() {
         return nomeTeam;
     }

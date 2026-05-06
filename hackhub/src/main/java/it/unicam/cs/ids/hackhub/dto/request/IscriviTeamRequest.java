@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotNull;
 
 public record IscriviTeamRequest(
         @NotNull(message = "L'ID è obbligatorio")
-        long capoID,
+        Long capoID,
         @NotNull(message = "L'ID è obbligatorio")
-        long teamID
+        Long teamID
 ) {
 }

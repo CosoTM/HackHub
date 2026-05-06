@@ -34,4 +34,5 @@ public class UserController {
         Utente utente = userService.getUtenteByName(name);
         return  ResponseEntity.status(HttpStatus.OK).body(utente);
     }
+
 }

@@ -4,6 +4,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record InviaSottomissioneRequest(
         @NotNull(message = "L'ID è obbligatorio")
-        long membroID
+        Long membroID
 ) {
 }

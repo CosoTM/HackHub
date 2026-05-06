@@ -33,7 +33,11 @@ public class TeamService {
         team.addMembroTeam(utente);
         team.setCapoTeam(utente);
 
-        return teamRepository.save(team);
+        teamRepository.save(team);
+        utente.setTeam(team);
+        userRepository.save(utente);
+
+        return team;
     }
 
     public List<Team> getAllTeams(long hackathonID){
@@ -49,7 +53,7 @@ public class TeamService {
         Utente capo = findUserOrThrow(capoID);
 
         if (!team.hasMembroTeam(capo)) throw new ForbiddenOperationException("Non fai parte del team");
-        if (team.getCapoTeam().equals(capo)) throw new ForbiddenOperationException("Non sei capo del team");
+        if (!team.getCapoTeam().equals(capo)) throw new ForbiddenOperationException("Non sei capo del team");
 
         Utente espulso = findUserOrThrow(userEspulsoID);
 
@@ -58,6 +62,8 @@ public class TeamService {
 
         team.removeMembroTeam(espulso);
         teamRepository.save(team);
+        espulso.setTeam(null);
+        userRepository.save(espulso);
     }
 
     public void abbandonaTeam(long teamID, long membroID){
@@ -73,11 +79,15 @@ public class TeamService {
 
         team.removeMembroTeam(membro);
         teamRepository.save(team);
+        membro.setTeam(null);
+        userRepository.save(membro);
     }
 
     public void aggiungiMembro(Utente utente, Team team){
         team.addMembroTeam(utente);
+        utente.setTeam(team);
         teamRepository.save(team);
+        userRepository.save(utente);
     }
 
     private Team findTeamOrThrow(long id){

@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotNull;
 
 public record BannaTeamRequest(
         @NotNull(message = "L'ID è obbligatorio")
-        long teamID,
+        Long teamID,
         @NotNull(message = "L'ID è obbligatorio")
-        long staffID
+        Long staffID
 ) {
 }

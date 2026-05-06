@@ -5,6 +5,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record AbbandonaTeamRequest(
         @NotNull(message = "L'ID è obbligatorio")
-        long membroID
+        Long membroID
 ) {
 }

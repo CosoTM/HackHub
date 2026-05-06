@@ -28,9 +28,9 @@ public record CreaHackathonRequest(
         @Min(value = 1, message = "La dimensione massima di un team non può essere inferiore a 1")
         int dimensioneMassimoTeam,
         @NotNull(message = "L'ID è obbligatorio")
-        long organizzatoreID,
+        Long organizzatoreID,
         @NotNull(message = "L'ID è obbligatorio")
-        long giudiceID,
+        Long giudiceID,
         @NotEmpty(message = "Deve essere inserito almeno un Id di un mentore")
         List<Long> mentoriID
 ) {
