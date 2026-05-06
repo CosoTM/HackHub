@@ -1,5 +1,6 @@
 package it.unicam.cs.ids.hackhub.service;
 
+import it.unicam.cs.ids.hackhub.exception.api.ConflictException;
 import it.unicam.cs.ids.hackhub.exception.api.ForbiddenOperationException;
 import it.unicam.cs.ids.hackhub.exception.api.ResourceNotFoundException;
 import it.unicam.cs.ids.hackhub.model.*;
@@ -51,7 +52,7 @@ public class ViolazioneService {
         if(!hackathon.hasMentore(mentore)) throw new ForbiddenOperationException("Non sei mentore dello Staff dell'Hackathon");
 
         Team team = findTeamOrThrow(teamID);
-        if(!hackathon.hasTeamIscritto(team)) throw new ForbiddenOperationException("Il Team non è iscritto all'Hackathon");
+        if(!hackathon.hasTeamIscritto(team)) throw new ConflictException("Il Team non è iscritto all'Hackathon");
 
         Violazione violazione = new Violazione();
         violazione.setMentore(mentore);

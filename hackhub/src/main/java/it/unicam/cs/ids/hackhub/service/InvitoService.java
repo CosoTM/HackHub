@@ -1,5 +1,6 @@
 package it.unicam.cs.ids.hackhub.service;
 
+import it.unicam.cs.ids.hackhub.exception.api.ConflictException;
 import it.unicam.cs.ids.hackhub.exception.api.ForbiddenOperationException;
 import it.unicam.cs.ids.hackhub.exception.api.ResourceNotFoundException;
 import it.unicam.cs.ids.hackhub.model.*;
@@ -9,7 +10,6 @@ import it.unicam.cs.ids.hackhub.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,14 +38,14 @@ public class InvitoService {
         Invito invito = findInvitoOrThrow(invitoId);
         Utente utente = findUserOrThrow(userId);
 
-        if(utente.getTeam() != null) throw new ForbiddenOperationException("Fai gia parte di un team");
+        if(utente.getTeam() != null) throw new ConflictException("Fai gia parte di un team");
         if(!invito.getUtenteInvitato().equals(utente)) throw new ForbiddenOperationException("Non sei il destinatario dell'invito");
 
         Team teamInvitante = invito.getTeamInvitante();
 
         for (Hackathon hackathon: teamInvitante.getHackathonIscritti()) {
             if(hackathon.getStatoHackathon() == StatoHackathon.IN_CORSO)
-                throw new ForbiddenOperationException("Il Team sta correntemente partecipando ad uno o più hackathon in corso. Attendi che finisca per entrare nel team");
+                throw new ConflictException("Il Team sta correntemente partecipando ad uno o più hackathon in corso. Attendi che finisca per entrare nel team");
         }
 
         teamService.aggiungiMembro(utente, teamInvitante);
@@ -59,15 +59,15 @@ public class InvitoService {
         Utente utente = findUserOrThrow(userID);
 
         if(!team.getCapoTeam().equals(capo)) throw new ForbiddenOperationException("Non sei il capo del team");
-        if(team.hasMembroTeam(utente)) throw new ForbiddenOperationException(utente.getEmail()+" fa gia parte del team");
+        if(team.hasMembroTeam(utente)) throw new ConflictException(utente.getEmail()+" fa gia parte del team");
 
         for (Hackathon hackathon: team.getHackathonIscritti()) {
             if(hackathon.getStatoHackathon() == StatoHackathon.IN_CORSO)
-                throw new ForbiddenOperationException("Il Team sta " +
+                throw new ConflictException("Il Team sta " +
                         "correntemente partecipando all'Hackathon: "+ hackathon.getNome() + ". Attendi che finisca per invitare nuovi utenti nel team");
 
             if(hackathon.getDimensioneMassimaTeam() < team.getMembriTeam().size()+1)
-                throw new ForbiddenOperationException("L'aggiunta del utente porterebbe la dimensione del team sopra a quella permessa dall'Hackathon "+ hackathon.getNome() + "a cui il team sta partecipando.");
+                throw new ConflictException("L'aggiunta del utente porterebbe la dimensione del team sopra a quella permessa dall'Hackathon "+ hackathon.getNome() + "a cui il team sta partecipando.");
         }
 
         Invito invito = new Invito();

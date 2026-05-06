@@ -26,7 +26,7 @@ public class RichiestaSupportoService {
         Utente mentore = findUserOrThrow(mentoreID);
 
         if(mentore.hasTipoUtente(UtenteType.MENTORE)) throw new ForbiddenOperationException();
-        if (!hackathon.hasMentore(mentore)) throw new ForbiddenOperationException("Non un mentore dell'Hackathon");
+        if (!hackathon.hasMentore(mentore)) throw new ForbiddenOperationException("Non sei un mentore dell'Hackathon");
 
         return richiestaSupprtoRepository.findByHackathon(hackathon);
     }

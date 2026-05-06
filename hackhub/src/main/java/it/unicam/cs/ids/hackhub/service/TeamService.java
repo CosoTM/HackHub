@@ -1,5 +1,6 @@
 package it.unicam.cs.ids.hackhub.service;
 
+import it.unicam.cs.ids.hackhub.exception.api.ConflictException;
 import it.unicam.cs.ids.hackhub.exception.api.ForbiddenOperationException;
 import it.unicam.cs.ids.hackhub.exception.api.ResourceNotFoundException;
 import it.unicam.cs.ids.hackhub.model.Team;
@@ -24,8 +25,8 @@ public class TeamService {
     public Team createTeam(long userId, String nomeTeam) {
         Utente utente = findUserOrThrow(userId);
 
-        if (utente.getTeam() != null) throw new ForbiddenOperationException(
-                "Fai gia parte di un team. Esci da questo team prima di crearne un'altro");
+        if (utente.getTeam() != null) throw new ConflictException(
+                "Fai gia parte di un team. Esci dal tuo team attuale prima di crearne un'altro");
 
         Team team = new Team();
         team.setNomeTeam(nomeTeam);
@@ -52,8 +53,8 @@ public class TeamService {
 
         Utente espulso = findUserOrThrow(userEspulsoID);
 
-        if (capo.equals(espulso)) throw new ForbiddenOperationException("Non puoi espellerti da solo");
-        if (!team.hasMembroTeam(espulso)) throw new ForbiddenOperationException("L'utente non fa parte del team");
+        if (capo.equals(espulso)) throw new ConflictException("Non puoi espellerti da solo");
+        if (!team.hasMembroTeam(espulso)) throw new ConflictException("L'utente non fa parte del team");
 
         team.removeMembroTeam(espulso);
         teamRepository.save(team);

@@ -1,6 +1,7 @@
 package it.unicam.cs.ids.hackhub.service;
 
 import it.unicam.cs.ids.hackhub.exception.api.AlreadyExistsException;
+import it.unicam.cs.ids.hackhub.exception.api.ConflictException;
 import it.unicam.cs.ids.hackhub.exception.api.ResourceNotFoundException;
 import it.unicam.cs.ids.hackhub.model.Utente;
 import it.unicam.cs.ids.hackhub.repository.UserRepository;
@@ -19,7 +20,7 @@ public class UserService {
 
         Utente esistente = userRepository.findByEmail(email).orElse(null);
         if(esistente != null)
-            throw new AlreadyExistsException("Un utente con la stessa email esiste già. Inseriscine un'altra");
+            throw new ConflictException("Un utente con la stessa email esiste già. Inseriscine un'altra");
 
         Utente registrato = new Utente();
         registrato.setNome(nome);

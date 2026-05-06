@@ -1,6 +1,7 @@
 package it.unicam.cs.ids.hackhub.service;
 
 import it.unicam.cs.ids.hackhub.dto.request.CreaHackathonRequest;
+import it.unicam.cs.ids.hackhub.exception.api.ConflictException;
 import it.unicam.cs.ids.hackhub.exception.api.ForbiddenOperationException;
 import it.unicam.cs.ids.hackhub.exception.api.ResourceNotFoundException;
 import it.unicam.cs.ids.hackhub.model.*;
@@ -35,7 +36,7 @@ public class HackathonService {
         Hackathon hackathon = findHackathonOrThrow(hackathonID);
 
         if(!hackathon.getOrganizzatore().equals(staff)) throw new ForbiddenOperationException();
-        if(!hackathon.getTeamIscritti().contains(team)) throw new ForbiddenOperationException("Il Team non è iscritto all'hackathon");
+        if(!hackathon.getTeamIscritti().contains(team)) throw new ConflictException("Il Team non è iscritto all'hackathon");
 
         team.penalizza(penalizzazione);
 
@@ -54,12 +55,12 @@ public class HackathonService {
         if (!organizzatore.hasTipoUtente(UtenteType.ORGANIZZATORE)) throw new ForbiddenOperationException();
 
         Utente giudice = findUserOrThrow(creaHackathonRequest.giudiceID());
-        if (!giudice.hasTipoUtente(UtenteType.GIUDICE)) throw new ForbiddenOperationException("L'utente non è un giudice");
+        if (!giudice.hasTipoUtente(UtenteType.GIUDICE)) throw new ConflictException("L'utente non è un giudice");
 
         List<Utente> mentori = new ArrayList<>();
         for (long mentoreID: creaHackathonRequest.mentoriID()) {
             Utente mentore = findUserOrThrow(mentoreID);
-            if (!mentore.hasTipoUtente(UtenteType.MENTORE)) throw new ForbiddenOperationException("L'utente non è un mentore");
+            if (!mentore.hasTipoUtente(UtenteType.MENTORE)) throw new ConflictException("L'utente non è un mentore");
             mentori.add(mentore);
         }
 
@@ -94,15 +95,16 @@ public class HackathonService {
         Hackathon hackathon = findHackathonOrThrow(hackathonID);
         Team team = findTeamOrThrow(teamID);
 
-        if(hackathon.hasTeamIscritto(team)) throw new ForbiddenOperationException("Il team è gia iscritto all'Hackathon");
-        if(team.getMembriTeam().size() > hackathon.getDimensioneMassimaTeam()) throw new ForbiddenOperationException("Il numero di membri del team supera il massimo numero permesso");
+        if(hackathon.hasTeamIscritto(team)) throw new ConflictException("Il team è gia iscritto all'Hackathon");
+        if(team.getMembriTeam().size() > hackathon.getDimensioneMassimaTeam()) throw new ConflictException("Il numero di membri del team supera il massimo numero permesso");
 
         for (Utente membro: team.getMembriTeam()){
-            if(hackathon.hasUtenteEscluso(membro)) throw new ForbiddenOperationException(membro.getEmail() + "è stato escluso dall'Hackathon. Il Team non può iscriversi all'Hackathon");
-            if(hackathon.isStaff(membro)) throw new ForbiddenOperationException(membro.getEmail() + "è parte dello staff dell'Hackathon. Il Team non può iscriversi all'Hackathon");
+            if(hackathon.hasUtenteEscluso(membro)) throw new ConflictException(membro.getEmail() + "è stato escluso dall'Hackathon. Il Team non può iscriversi all'Hackathon");
+            if(hackathon.isStaff(membro)) throw new ConflictException(membro.getEmail() + "è parte dello staff dell'Hackathon. Il Team non può iscriversi all'Hackathon");
         }
 
         Utente capo = findUserOrThrow(userID);
+        if (!team.hasMembroTeam(capo)) throw new ForbiddenOperationException("Non fai parte del team");
         if(!team.getCapoTeam().equals(capo)) throw new ForbiddenOperationException("Non sei capo del team");
 
         Sottomissione sottomissione = new Sottomissione();
@@ -123,8 +125,8 @@ public class HackathonService {
         Hackathon hackathon = findHackathonOrThrow(hackathonID);
         Team team = findTeamOrThrow(teamID);
 
-        if(!hackathon.hasTeamIscritto(team)) throw new ForbiddenOperationException("Il team non è iscritto all'Hackathon");
-        if(!hackathon.getStatoHackathon().equals(StatoHackathon.IN_CORSO)) throw new ForbiddenOperationException("L'hackathon non è in corso");
+        if(!hackathon.hasTeamIscritto(team)) throw new ConflictException("Il team non è iscritto all'Hackathon");
+        if(!hackathon.getStatoHackathon().equals(StatoHackathon.IN_CORSO)) throw new ConflictException("L'hackathon non è in corso");
 
         Utente organizzatore = findUserOrThrow(staffID);
         if (!hackathon.getOrganizzatore().equals(organizzatore)) throw new ForbiddenOperationException();
@@ -145,9 +147,9 @@ public class HackathonService {
         Hackathon hackathon = findHackathonOrThrow(hackathonID);
         Team team = findTeamOrThrow(teamID);
 
-        if(!hackathon.hasTeamIscritto(team)) throw new ForbiddenOperationException("Il team non è iscritto all'Hackathon");
+        if(!hackathon.hasTeamIscritto(team)) throw new ConflictException("Il team non è iscritto all'Hackathon");
         // TODO: nuovo stato di fine valutazione??
-        if(hackathon.getStatoHackathon() != StatoHackathon.VALUTAZIONE) throw new ForbiddenOperationException("L'Hackathon non può essere terminato nello stato corrente");
+        if(hackathon.getStatoHackathon() != StatoHackathon.VALUTAZIONE) throw new ConflictException("L'Hackathon non può essere terminato nello stato corrente");
 
         Utente organizzatore = findUserOrThrow(staffID);
         if (!hackathon.getOrganizzatore().equals(organizzatore)) throw new ForbiddenOperationException();

@@ -1,5 +1,6 @@
 package it.unicam.cs.ids.hackhub.service;
 
+import it.unicam.cs.ids.hackhub.exception.api.ConflictException;
 import it.unicam.cs.ids.hackhub.exception.api.ForbiddenOperationException;
 import it.unicam.cs.ids.hackhub.exception.api.ResourceNotFoundException;
 import it.unicam.cs.ids.hackhub.model.*;
@@ -37,6 +38,9 @@ public class SottomissioniService {
 
         checkIfStaff(staff);
 
+        Hackathon hackathon = sottomissione.getHackathon();
+        if(!hackathon.isStaff(staff)) throw new ForbiddenOperationException("Non sei parte dello Staff dell'Hackathon");
+
         return sottomissione;
     }
 
@@ -48,10 +52,10 @@ public class SottomissioniService {
         if(!team.hasMembroTeam(membro)) throw new ForbiddenOperationException("Non fai parte del team");
 
         Hackathon hackathon = sottomissione.getHackathon();
-        if(!hackathon.hasTeamIscritto(team)) throw new ForbiddenOperationException("Il Team non è iscritto all'Hackathon");
+        if(!hackathon.hasTeamIscritto(team)) throw new ConflictException("Il Team non è iscritto all'Hackathon");
 
         Date now = new Date();
-        if(now.after(hackathon.getScadenzaSottomissioni())) throw new ForbiddenOperationException("Non è più possibile inviare la sottomissione");
+        if(now.after(hackathon.getScadenzaSottomissioni())) throw new ConflictException("Non è più possibile inviare la sottomissione");
 
         sottomissione.setInviata(true);
         sottomissioneRepository.save(sottomissione);
@@ -80,7 +84,7 @@ public class SottomissioniService {
         if(!utente.hasTipoUtente(UtenteType.GIUDICE) ||
            !utente.hasTipoUtente(UtenteType.MENTORE) ||
            !utente.hasTipoUtente(UtenteType.ORGANIZZATORE)) {
-            throw new ForbiddenOperationException("Non sei parte dello Staff");
+            throw new ForbiddenOperationException("Non sei parte dello Staff della piattaforma");
         }
     }
 
