@@ -2,8 +2,6 @@ package it.unicam.cs.ids.hackhub.controller;
 
 import it.unicam.cs.ids.hackhub.dto.request.*;
 import it.unicam.cs.ids.hackhub.model.Hackathon;
-import it.unicam.cs.ids.hackhub.model.hackathonBuilder.ConcreteHackathonBuilder;
-import it.unicam.cs.ids.hackhub.repository.HackathonRepository;
 import it.unicam.cs.ids.hackhub.service.HackathonService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +65,7 @@ public class HackathonController {
     @PutMapping(value = "/{hackathonID}/ban")
     public ResponseEntity<Boolean> bannaTeam(@PathVariable("hackathonID") long hackathonID,
                                              @Valid @RequestBody BannaTeamRequest bannaTeamRequest){
-       hackathonService.bannaTeam(hackathonID, bannaTeamRequest.staffID(),
+       hackathonService.bannaTeam(hackathonID, bannaTeamRequest.organizzatoreID(),
                bannaTeamRequest.teamID());
        return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -76,8 +74,18 @@ public class HackathonController {
     public ResponseEntity<Boolean> proclamaVincitore(@PathVariable("hackathonID") long hackathonID,
                                                      @Valid @RequestBody ProclamaVincitoreRequest proclamaVincitoreRequest){
         hackathonService.proclamaVincitore(hackathonID,
-                proclamaVincitoreRequest.teamID(),
-                proclamaVincitoreRequest.organizzatoreID());
+                proclamaVincitoreRequest.organizzatoreID(),
+                proclamaVincitoreRequest.teamID());
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    // PER TEST
+    @PutMapping(value = "/{hackathonID}/changeState")
+    public ResponseEntity<Boolean> cambiaStato(@PathVariable("hackathonID") long hackathonID,
+                                                     @Valid @RequestBody CambiaStatoHackathonRequest cambiaStatoHackathonRequest){
+        hackathonService.cambiaStato(hackathonID,
+                cambiaStatoHackathonRequest.organizzatoreID(),
+                cambiaStatoHackathonRequest.stato());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

@@ -1,6 +1,8 @@
 package it.unicam.cs.ids.hackhub.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.File;
 import java.util.Date;
@@ -14,12 +16,14 @@ public class Sottomissione {
 
     // private File file;
     private Date dataConsegna;
-    @OneToOne
+
     private Valutazione valutazione;
     private boolean inviata;
-    @OneToOne
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Team team;
-    @OneToOne
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Hackathon hackathon;
 
     public Date getDataConsegna() {

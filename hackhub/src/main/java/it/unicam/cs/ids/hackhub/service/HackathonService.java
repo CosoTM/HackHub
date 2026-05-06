@@ -38,14 +38,14 @@ public class HackathonService {
         if(!hackathon.getOrganizzatore().equals(staff)) throw new ForbiddenOperationException();
         if(!hackathon.getTeamIscritti().contains(team)) throw new ConflictException("Il Team non è iscritto all'hackathon");
 
-        team.penalizza(penalizzazione);
+        hackathon.penalizza(team, penalizzazione);
 
         teamRepository.save(team);
     }
 
 
     public List<Hackathon> getOngoingHackathons() {
-        return hackathonRepository.findByStatoHackathon(StatoHackathon.ISCRIZIONE);
+        return hackathonRepository.findByStatoHackathon(StatoHackathon.IN_CORSO);
     }
 
     public Hackathon createHackathon(CreaHackathonRequest creaHackathonRequest){
@@ -95,6 +95,7 @@ public class HackathonService {
         Hackathon hackathon = findHackathonOrThrow(hackathonID);
         Team team = findTeamOrThrow(teamID);
 
+        if(hackathon.getStatoHackathon() != StatoHackathon.ISCRIZIONE) throw new ConflictException("Le iscrizioni sono chiuse");
         if(hackathon.hasTeamIscritto(team)) throw new ConflictException("Il team è gia iscritto all'Hackathon");
         if(team.getMembriTeam().size() > hackathon.getDimensioneMassimaTeam()) throw new ConflictException("Il numero di membri del team supera il massimo numero permesso");
 
@@ -107,16 +108,18 @@ public class HackathonService {
         if (!team.hasMembroTeam(capo)) throw new ForbiddenOperationException("Non fai parte del team");
         if(!team.getCapoTeam().equals(capo)) throw new ForbiddenOperationException("Non sei capo del team");
 
-        Sottomissione sottomissione = new Sottomissione();
-        sottomissione.setTeam(team);
-
-        sottomissioneRepository.save(sottomissione);
-
         hackathon.addTeam(team);
         team.addHackathonIscritto(hackathon);
 
         teamRepository.save(team);
         hackathonRepository.save(hackathon);
+
+        Sottomissione sottomissione = new Sottomissione();
+        sottomissione.setTeam(team);
+        sottomissione.setHackathon(hackathon);
+
+        sottomissioneRepository.save(sottomissione);
+
 
         return true;
     }
@@ -156,10 +159,24 @@ public class HackathonService {
 
         hackathon.setStatoHackathon(StatoHackathon.CONCLUSO);
         // TODO: salvare team vincitore??
-        // sistema di pagamento
+
+        // TODO: sistema di pagamento
 
         hackathonRepository.save(hackathon);
         return true;
+    }
+
+    // PER TEST
+    public void cambiaStato(long hackathonID, Long organizzatoreID,
+                            StatoHackathon stato) {
+        Hackathon hackathon = findHackathonOrThrow(hackathonID);
+        Utente organizzatore = findUserOrThrow(organizzatoreID);
+
+        if (!organizzatore.hasTipoUtente(UtenteType.ORGANIZZATORE)) throw new ForbiddenOperationException();
+        if (!hackathon.isStaff(organizzatore)) throw new ForbiddenOperationException("Non sei organizzatore dell'Hackathon");
+
+        hackathon.setStatoHackathon(stato);
+        hackathonRepository.save(hackathon);
     }
 
     private Hackathon findHackathonOrThrow(long id){

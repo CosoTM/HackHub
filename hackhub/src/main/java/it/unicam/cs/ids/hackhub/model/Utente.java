@@ -15,7 +15,7 @@ public class Utente {
     private String email;
     private String password;
 
-    @ElementCollection
+    @ElementCollection(targetClass = UtenteType.class)
     @Enumerated(EnumType.STRING)
     private List<UtenteType> tipoUtente = new ArrayList<>();
 

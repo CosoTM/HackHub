@@ -1,7 +1,8 @@
 package it.unicam.cs.ids.hackhub.model;
 
-import it.unicam.cs.ids.hackhub.repository.HackathonRepository;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 import java.util.List;
@@ -13,33 +14,43 @@ public class RichiestaSupporto {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ID;
 
-    private String richiesta;
-    private Date dataInvio;
+    private String titolo;
+    private String corpo;
     @Enumerated(EnumType.STRING)
     private StatoRichiesta statoRichiesta;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Team team;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Hackathon hackathon;
 
-    @OneToMany
+    @ElementCollection
     private List<RispostaSupporto> risposte;
 
-    public String getRichiesta() {
-        return richiesta;
+    public String getTitolo() {
+        return titolo;
     }
 
-    public void setRichiesta(String richiesta) {
-        this.richiesta = richiesta;
+    public void setTitolo(String titolo) {
+        this.titolo = titolo;
     }
 
-    public Date getDataInvio() {
-        return dataInvio;
+    public String getCorpo() {
+        return corpo;
     }
 
-    public void setDataInvio(Date dataInvio) {
-        this.dataInvio = dataInvio;
+    public void setCorpo(String corpo) {
+        this.corpo = corpo;
+    }
+
+    public StatoRichiesta getStatoRichiesta() {
+        return statoRichiesta;
+    }
+
+    public void setStatoRichiesta(StatoRichiesta statoRichiesta) {
+        this.statoRichiesta = statoRichiesta;
     }
 
     public Team getTeam() {

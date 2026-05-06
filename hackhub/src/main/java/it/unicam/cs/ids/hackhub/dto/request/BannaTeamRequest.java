@@ -6,6 +6,6 @@ public record BannaTeamRequest(
         @NotNull(message = "L'ID è obbligatorio")
         Long teamID,
         @NotNull(message = "L'ID è obbligatorio")
-        Long staffID
+        Long organizzatoreID
 ) {
 }

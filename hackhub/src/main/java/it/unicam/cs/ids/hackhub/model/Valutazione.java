@@ -1,16 +1,9 @@
 package it.unicam.cs.ids.hackhub.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-@Entity
+@Embeddable
 public class Valutazione {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long ID;
-
     private String giudizioScritto;
     private int punteggio;
 

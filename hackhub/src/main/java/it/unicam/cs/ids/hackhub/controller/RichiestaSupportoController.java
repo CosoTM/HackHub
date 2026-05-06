@@ -1,5 +1,6 @@
 package it.unicam.cs.ids.hackhub.controller;
 
+import it.unicam.cs.ids.hackhub.dto.request.InviaRichiestaSupportoRequest;
 import it.unicam.cs.ids.hackhub.dto.request.RispondiRichiestaRequest;
 import it.unicam.cs.ids.hackhub.model.RichiestaSupporto;
 import it.unicam.cs.ids.hackhub.model.RispostaSupporto;
@@ -39,6 +40,19 @@ public class RichiestaSupportoController {
                         rispondiRichiestaRequest.risposta()
                 );
         return ResponseEntity.status(HttpStatus.OK).body(risposta);
+    }
+
+    @PostMapping(value = "/send")
+    public ResponseEntity<RichiestaSupporto> inviaRichiestaSupporto(
+            @Valid @RequestBody InviaRichiestaSupportoRequest inviaRichiestaSupportoRequest
+    ){
+        RichiestaSupporto richiestaSupporto =
+                richiestaSupportoService.inviaRichiestaSupporto(
+                        inviaRichiestaSupportoRequest.teamID(),
+                        inviaRichiestaSupportoRequest.hackathonID(),
+                        inviaRichiestaSupportoRequest.titolo(),
+                        inviaRichiestaSupportoRequest.corpo());
+        return ResponseEntity.status(HttpStatus.OK).body(richiestaSupporto);
     }
 
     @PutMapping(value = "/call")

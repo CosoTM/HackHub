@@ -3,6 +3,7 @@ package it.unicam.cs.ids.hackhub.service;
 import it.unicam.cs.ids.hackhub.exception.api.ConflictException;
 import it.unicam.cs.ids.hackhub.exception.api.ForbiddenOperationException;
 import it.unicam.cs.ids.hackhub.exception.api.ResourceNotFoundException;
+import it.unicam.cs.ids.hackhub.model.Hackathon;
 import it.unicam.cs.ids.hackhub.model.Team;
 import it.unicam.cs.ids.hackhub.model.Utente;
 import it.unicam.cs.ids.hackhub.repository.HackathonRepository;
@@ -73,6 +74,14 @@ public class TeamService {
         if(!team.hasMembroTeam(membro)) throw new ForbiddenOperationException("Non fai parte del team");
 
         if(team.getMembriTeam().size() == 1){
+            membro.setTeam(null);
+            userRepository.save(membro);
+
+            for (Hackathon hackacthon: team.getHackathonIscritti()) {
+                hackacthon.removeTeam(team);
+                hackathonRepository.save(hackacthon);
+            }
+
             teamRepository.delete(team);
             return;
         }

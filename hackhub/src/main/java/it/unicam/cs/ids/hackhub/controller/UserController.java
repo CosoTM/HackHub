@@ -1,7 +1,9 @@
 package it.unicam.cs.ids.hackhub.controller;
 
+import it.unicam.cs.ids.hackhub.dto.request.AssegnaRuoloRequest;
 import it.unicam.cs.ids.hackhub.dto.request.RegistraUtenteRequest;
 import it.unicam.cs.ids.hackhub.model.Utente;
+import it.unicam.cs.ids.hackhub.model.UtenteType;
 import it.unicam.cs.ids.hackhub.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,15 @@ public class UserController {
     public ResponseEntity<Utente> getUserByName(@PathVariable("name") String name){
         Utente utente = userService.getUtenteByName(name);
         return  ResponseEntity.status(HttpStatus.OK).body(utente);
+    }
+
+    // PER TEST
+    @PutMapping(value = "/{id}/role")
+    public ResponseEntity<Void> assegnaRuolo(
+            @PathVariable("id") long userID,
+            @RequestBody AssegnaRuoloRequest assegnaRuoloRequest){
+        userService.assegnaRuolo(userID, assegnaRuoloRequest.ruolo());
+        return  ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

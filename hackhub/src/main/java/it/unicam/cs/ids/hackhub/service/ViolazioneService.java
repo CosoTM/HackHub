@@ -25,21 +25,24 @@ public class ViolazioneService {
     private TeamRepository teamRepository;
 
 
-    public List<Violazione> getAllViolazioni(long mentoreID, long hackathonID) {
+    public List<Violazione> getAllViolazioni(long staffID, long hackathonID) {
         Hackathon hackathon = findHackathonOrThrow(hackathonID);
-        Utente mentore = findUserOrThrow(mentoreID);
+        Utente staff = findUserOrThrow(staffID);
 
-        if(mentore.hasTipoUtente(UtenteType.MENTORE)) throw new ForbiddenOperationException();
-        if(!hackathon.hasMentore(mentore)) throw new ForbiddenOperationException("Non sei mentore dello Staff dell'Hackathon");
+        checkIfStaff(staff);
+        if(!hackathon.isStaff(staff)) throw new ForbiddenOperationException("Non sei staff dell'Hackathon");
 
         return violazioneRepository.findByHackathon(hackathon);
     }
 
-    public Violazione getViolazioneById(long sottomissioneID, long mentoreID) {
+    public Violazione getViolazioneById(long sottomissioneID, long staffID) {
         Violazione violazione = findViolazioneOrThrow(sottomissioneID);
-        Utente mentore = findUserOrThrow(mentoreID);
+        Utente staff = findUserOrThrow(staffID);
 
-        if(mentore.hasTipoUtente(UtenteType.MENTORE)) throw new ForbiddenOperationException();
+        checkIfStaff(staff);
+
+        Hackathon hackathon = violazione.getHackathon();
+        if(!hackathon.isStaff(staff)) throw new ForbiddenOperationException("Non sei staff dell'Hackathon");
 
         return violazione;
     }
@@ -48,7 +51,7 @@ public class ViolazioneService {
         Hackathon hackathon = findHackathonOrThrow(hackathonID);
         Utente mentore = findUserOrThrow(mentoreID);
 
-        if(mentore.hasTipoUtente(UtenteType.MENTORE)) throw new ForbiddenOperationException();
+        if(!mentore.hasTipoUtente(UtenteType.MENTORE)) throw new ForbiddenOperationException();
         if(!hackathon.hasMentore(mentore)) throw new ForbiddenOperationException("Non sei mentore dello Staff dell'Hackathon");
 
         Team team = findTeamOrThrow(teamID);
@@ -63,6 +66,14 @@ public class ViolazioneService {
         violazioneRepository.save(violazione);
 
         return violazione;
+    }
+
+    private void checkIfStaff(Utente utente){
+        if(!utente.hasTipoUtente(UtenteType.GIUDICE) &&
+                !utente.hasTipoUtente(UtenteType.MENTORE) &&
+                !utente.hasTipoUtente(UtenteType.ORGANIZZATORE)) {
+            throw new ForbiddenOperationException("Non sei parte dello Staff della piattaforma");
+        }
     }
 
     private Violazione findViolazioneOrThrow(long id){

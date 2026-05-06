@@ -1,9 +1,9 @@
 package it.unicam.cs.ids.hackhub.service;
 
-import it.unicam.cs.ids.hackhub.exception.api.AlreadyExistsException;
 import it.unicam.cs.ids.hackhub.exception.api.ConflictException;
 import it.unicam.cs.ids.hackhub.exception.api.ResourceNotFoundException;
 import it.unicam.cs.ids.hackhub.model.Utente;
+import it.unicam.cs.ids.hackhub.model.UtenteType;
 import it.unicam.cs.ids.hackhub.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +38,17 @@ public class UserService {
         return findUserOrThrow(name);
     }
 
+    // PER TEST
+    public void assegnaRuolo(long userID, UtenteType ruolo) {
+        Utente utente = findUserOrThrow(userID);
+
+        if(utente.hasTipoUtente(ruolo)) throw new ConflictException("L'utente ha già questo ruolo");
+        System.out.println(ruolo);
+        utente.addTipoUtente(ruolo);
+        System.out.println(utente);
+        userRepository.save(utente);
+    }
+
     private Utente findUserOrThrow(long id){
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
                 "Utente non trovato " + "con id: " + id));
@@ -47,4 +58,5 @@ public class UserService {
         return userRepository.findByNome(name).orElseThrow(() -> new ResourceNotFoundException(
                 "Utente non trovato " + "con nome: " + name));
     }
+
 }

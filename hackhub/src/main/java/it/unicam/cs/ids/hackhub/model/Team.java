@@ -1,5 +1,8 @@
 package it.unicam.cs.ids.hackhub.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -21,9 +24,8 @@ public class Team {
     @OneToOne
     private Utente capoTeam;
 
-    private int penalizzazioni = 0;
-
     @ManyToMany
+    @JsonIgnore
     private List<Hackathon> hackathonIscritti;
 
     public Long getID() {
@@ -66,18 +68,6 @@ public class Team {
             Random r = new Random();
             setCapoTeam(membriTeam.get(r.nextInt(membriTeam.size())));
         }
-    }
-
-    public int getPenalizzazioni() {
-        return penalizzazioni;
-    }
-
-    public void setPenalizzazioni(int penalizzazioni) {
-        this.penalizzazioni = penalizzazioni;
-    }
-
-    public void penalizza(int punti){
-        penalizzazioni -= punti;
     }
 
     public List<Hackathon> getHackathonIscritti() {

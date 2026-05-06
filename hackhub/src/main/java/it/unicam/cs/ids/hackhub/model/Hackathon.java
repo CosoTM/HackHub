@@ -1,10 +1,10 @@
 package it.unicam.cs.ids.hackhub.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class Hackathon {
@@ -31,14 +31,20 @@ public class Hackathon {
     private Utente giudice;
     @ManyToMany
     private List<Utente> mentori;
+
     @ManyToMany(mappedBy = "hackathonIscritti")
     private List<Team> teamIscritti;
     @ManyToMany
     private List<Utente> utentiEsclusi;
 
+    @ElementCollection
+    @MapKeyJoinColumn(name = "team_id")
+    private Map<Team, Integer> penalizzazioni;
+
     public Hackathon() {
         this.teamIscritti = new ArrayList<>();
         this.utentiEsclusi = new ArrayList<>();
+        this.penalizzazioni = new HashMap<>();
     }
 
     public String getNome() {
@@ -195,6 +201,19 @@ public class Hackathon {
 
     public void removeUtenteEscluso(Utente utente){
         utentiEsclusi.remove(utente);
+    }
+
+    public Map<Team, Integer> getPenalizzazioni() {
+        return penalizzazioni;
+    }
+
+    public void setPenalizzazioni(Map<Team, Integer> penalizzazioni) {
+        this.penalizzazioni = penalizzazioni;
+    }
+
+    public void penalizza(Team team, int penalizzazione){
+        int p = penalizzazioni.getOrDefault(team, 0);
+        penalizzazioni.put(team, p + penalizzazione);
     }
 
     public boolean isStaff(Utente utente){

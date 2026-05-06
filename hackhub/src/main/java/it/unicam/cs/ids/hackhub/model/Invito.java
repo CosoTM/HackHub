@@ -1,6 +1,8 @@
 package it.unicam.cs.ids.hackhub.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Invito {
@@ -9,6 +11,7 @@ public class Invito {
     private Long ID;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Team teamInvitante;
     @ManyToOne
     private Utente utenteInvitato;

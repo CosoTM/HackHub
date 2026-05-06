@@ -1,6 +1,8 @@
 package it.unicam.cs.ids.hackhub.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Violazione {
@@ -8,10 +10,12 @@ public class Violazione {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ID;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Team team;
     @ManyToOne
     private Utente mentore;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Hackathon hackathon;
     private String motivoSegnalazione;
 

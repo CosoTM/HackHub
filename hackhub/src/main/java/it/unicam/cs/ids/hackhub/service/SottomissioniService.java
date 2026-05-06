@@ -58,6 +58,7 @@ public class SottomissioniService {
         if(now.after(hackathon.getScadenzaSottomissioni())) throw new ConflictException("Non è più possibile inviare la sottomissione");
 
         sottomissione.setInviata(true);
+        sottomissione.setDataConsegna(new Date());
         sottomissioneRepository.save(sottomissione);
     }
 
@@ -69,6 +70,7 @@ public class SottomissioniService {
 
         Hackathon hackathon = sottomissione.getHackathon();
         if(!hackathon.getGiudice().equals(giudice)) throw new ForbiddenOperationException("Non sei giudice dell'Hackathon");
+        if(!sottomissione.isInviata()) throw new ConflictException("La sottomissione non è ancora giudicabile");
 
         Valutazione valutazione = new Valutazione();
         valutazione.setPunteggio(punteggio);
@@ -81,8 +83,8 @@ public class SottomissioniService {
     }
 
     private void checkIfStaff(Utente utente){
-        if(!utente.hasTipoUtente(UtenteType.GIUDICE) ||
-           !utente.hasTipoUtente(UtenteType.MENTORE) ||
+        if(!utente.hasTipoUtente(UtenteType.GIUDICE) &&
+           !utente.hasTipoUtente(UtenteType.MENTORE) &&
            !utente.hasTipoUtente(UtenteType.ORGANIZZATORE)) {
             throw new ForbiddenOperationException("Non sei parte dello Staff della piattaforma");
         }

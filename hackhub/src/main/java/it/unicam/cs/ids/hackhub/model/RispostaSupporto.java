@@ -2,13 +2,9 @@ package it.unicam.cs.ids.hackhub.model;
 
 import jakarta.persistence.*;
 
-@Entity
+@Embeddable
 public class RispostaSupporto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long ID;
-
-    @OneToOne
+    @ManyToOne
     private Utente mentore;
     private String risposta;
 
